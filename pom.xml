@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>org.example</groupId>
+    <artifactId>spock-reports-test</artifactId>
+    <version>1.0-SNAPSHOT</version>
+
+    <properties>
+        <maven.compiler.source>15</maven.compiler.source>
+        <maven.compiler.target>15</maven.compiler.target>
+    </properties>
+
+    <build>
+        <plugins>
+            <!-- Mandatory plugins for using Spock -->
+            <plugin>
+                <!-- The gmavenplus plugin is used to compile Groovy code. To learn more about this plugin,
+                visit https://github.com/groovy/GMavenPlus/wiki -->
+                <groupId>org.codehaus.gmavenplus</groupId>
+                <artifactId>gmavenplus-plugin</artifactId>
+                <version>1.12.0</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>compile</goal>
+                            <goal>compileTests</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- Optional plugins for using Spock -->
+            <!-- Only required if names of spec classes don't match default Surefire patterns (`*Test` etc.) -->
+            <plugin>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.0.0-M5</version>
+                <configuration>
+                    <useFile>false</useFile>
+                    <includes>
+                        <include>**/*Spec.java</include>
+                    </includes>
+                    <systemPropertyVariables>
+                        <com.athaydes.spockframework.report.outputDir>${project.build.directory}/spock-reports
+                        </com.athaydes.spockframework.report.outputDir>
+                    </systemPropertyVariables>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <dependencies>
+        <!-- ## Dependencies taken from: https://github.com/spockframework/spock-example/blob/master/pom.xml -->
+        <!-- Mandatory dependencies for using Spock -->
+        <dependency>
+            <groupId>org.spockframework</groupId>
+            <artifactId>spock-core</artifactId>
+            <version>2.0-M5-groovy-3.0</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.spockframework</groupId>
+            <artifactId>spock-junit4</artifactId>
+            <version>2.0-M5-groovy-3.0</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency> <!-- enables mocking of classes (in addition to interfaces) -->
+            <groupId>net.bytebuddy</groupId>
+            <artifactId>byte-buddy</artifactId>
+            <version>1.10.10</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency> <!-- enables mocking of classes without default constructor (together with ByteBuddy or CGLIB) -->
+            <groupId>org.objenesis</groupId>
+            <artifactId>objenesis</artifactId>
+            <version>3.1</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.github.tomakehurst</groupId>
+            <artifactId>wiremock-jre8</artifactId>
+            <version>2.27.2</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- ## Dependencies taken from: https://github.com/renatoathaydes/spock-reports -->
+        <dependency>
+            <groupId>com.athaydes</groupId>
+            <artifactId>spock-reports</artifactId>
+            <version>2.0.1-RC3</version>
+            <scope>test</scope>
+            <!-- this avoids affecting your version of Groovy/Spock -->
+            <!--exclusions>
+                <exclusion>
+                    <groupId>*</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions-->
+        </dependency>
+
+        <!-- // if you don't already have slf4j-api and an implementation of it in the classpath, add this! -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.7.30</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <version>1.7.30</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+</project>
